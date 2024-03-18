@@ -1,5 +1,6 @@
-package com.dbPostgresAutores.autores.model;
+package com.dbPostgresAutores.autores.model.actorEnt;
 
+import com.dbPostgresAutores.autores.model.baseModel.BaseModel;
 import com.dbPostgresAutores.autores.model.baseModel.BaseUpdate;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,11 +10,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "actor")
-public class Actor extends BaseUpdate {
-    @Column(name = "fist_name")
-    private String firstName;
-
-    @Column(name = "last_name")
-    private String lastName;
+public class Actor extends BaseModel {
 
 }
