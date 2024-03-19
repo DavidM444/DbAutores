@@ -25,7 +25,7 @@ public class Customer extends BaseModel {
     @Column(name = "active")//impl Enum
     private Integer active;
 
-    }
+
 }
 
 
