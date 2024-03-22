@@ -1,10 +1,8 @@
 package com.dbPostgresAutores.autores.model;
 
 import com.dbPostgresAutores.autores.model.baseModel.BaseUpdate;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import org.hibernate.annotations.Type;
+import com.dbPostgresAutores.autores.model.dtos.FilmDto;
+import jakarta.persistence.*;
 
 import java.time.Year;
 @Entity
@@ -17,7 +15,11 @@ public class Film extends BaseUpdate {
     private String description;
     @Column(name = "release_year")
     private Year releaseYear;
-    private Integer languageId;
+
+    @OneToOne
+    @JoinColumn(name = "language_id", referencedColumnName = "id")
+    private Language languageId;
+
     @Column(name = "rental_duration")
     private short rentalDuration;
     @Column(name = "rental_rate")
@@ -26,10 +28,14 @@ public class Film extends BaseUpdate {
     private short length;
     @Column(name = "replacement_cost")
     private Integer replacementCost;
+    @Column(name = "rating")
     private String  rating;
     @Column(name = "especial_features")
     private String especialFeatures;
     @Column(name = "full_text")
     private String fullText;
 
+    public Film(FilmDto filmDto){
+
+    }
 }
