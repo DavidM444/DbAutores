@@ -2,13 +2,24 @@ package com.dbPostgresAutores.autores.model.place;
 
 
 import com.dbPostgresAutores.autores.model.baseModel.BaseUpdate;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
+
+import java.util.HashSet;
+import java.util.Set;
+
+
+@Getter
+@Setter
 @Entity
 @Table(name = "country")
 public class Country extends BaseUpdate {
     @Column(name = "country")
     private String country;
+
+
 }
