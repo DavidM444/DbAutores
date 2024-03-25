@@ -1,5 +1,6 @@
 package com.dbPostgresAutores.autores.model;
 
+import com.dbPostgresAutores.autores.model.actorEnt.Actor;
 import com.dbPostgresAutores.autores.model.baseModel.BaseUpdate;
 import com.dbPostgresAutores.autores.model.dtos.FilmDto;
 import jakarta.persistence.*;
@@ -8,6 +9,7 @@ import lombok.Setter;
 
 import java.time.Year;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Getter
@@ -45,7 +47,10 @@ public class Film extends BaseUpdate {
     @OneToMany
     private List<Category> category = new ArrayList<>();
 
-    public Film(FilmDto filmDto, Language language, Category category){
+    @OneToMany
+    private List<Actor> actor = new LinkedList<>();
+
+    public Film(FilmDto filmDto, Language language, Category category, Actor actor){
         super();
         this.title = filmDto.title();
         this.description = filmDto.description();
@@ -59,5 +64,6 @@ public class Film extends BaseUpdate {
         this.especialFeatures =  filmDto.spFeatures();
         this.fullText =  filmDto.fulltext();
         this.category.add(category);
+        this.actor.add(actor);
     }
 }
