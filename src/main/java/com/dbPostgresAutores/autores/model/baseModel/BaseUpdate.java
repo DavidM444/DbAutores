@@ -1,7 +1,5 @@
 package com.dbPostgresAutores.autores.model.baseModel;
-
 import jakarta.persistence.*;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -13,8 +11,6 @@ public class BaseUpdate implements Serializable {
     private Integer id;
 
     @Column(name = "last_update")
-    private LocalDate lastUpdate;
-
-
+    private LocalDate lastUpdate = LocalDate.now();
 
 }
