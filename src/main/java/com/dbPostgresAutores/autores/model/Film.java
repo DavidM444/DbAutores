@@ -3,8 +3,15 @@ package com.dbPostgresAutores.autores.model;
 import com.dbPostgresAutores.autores.model.baseModel.BaseUpdate;
 import com.dbPostgresAutores.autores.model.dtos.FilmDto;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.Year;
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
+@Setter
 @Entity
 @Table(name = "film")
 public class Film extends BaseUpdate {
@@ -23,7 +30,7 @@ public class Film extends BaseUpdate {
     @Column(name = "rental_duration")
     private short rentalDuration;
     @Column(name = "rental_rate")
-    private Integer rentalRate;
+    private Double rentalRate;
     @Column(name = "length")
     private short length;
     @Column(name = "replacement_cost")
@@ -35,7 +42,22 @@ public class Film extends BaseUpdate {
     @Column(name = "full_text")
     private String fullText;
 
-    public Film(FilmDto filmDto){
+    @OneToMany
+    private List<Category> category = new ArrayList<>();
 
+    public Film(FilmDto filmDto, Language language, Category category){
+        super();
+        this.title = filmDto.title();
+        this.description = filmDto.description();
+        this.releaseYear =  filmDto.year();
+        this.languageId = language;
+        this.rentalDuration =  filmDto.rentalDuration();
+        this.rentalRate =  filmDto.rentalRate();
+        this.length =  filmDto.length();
+        this.replacementCost =  filmDto.replaceCost();
+        this.rating =  filmDto.rating();
+        this.especialFeatures =  filmDto.spFeatures();
+        this.fullText =  filmDto.fulltext();
+        this.category.add(category);
     }
 }
