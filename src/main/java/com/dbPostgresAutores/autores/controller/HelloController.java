@@ -1,5 +1,6 @@
 package com.dbPostgresAutores.autores.controller;
 
+import com.dbPostgresAutores.autores.aditionFunction.FindEntity;
 import com.dbPostgresAutores.autores.model.Category;
 import com.dbPostgresAutores.autores.model.Film;
 import com.dbPostgresAutores.autores.model.Language;
@@ -21,6 +22,9 @@ public class HelloController {
     public final CategoryRepository categoryRepository;
     public final FilmRepository filmRepository;
     public final LanguageRepository languageRepository;
+
+    //metods
+    public FindEntity entity;
     public HelloController(CountryRepository coutryRep, CityRepository city, CategoryRepository categoryRepository, FilmRepository filmRepository, LanguageRepository languageRepository){
         this.countryRepository = coutryRep;
         this.cityRepository = city;
@@ -60,27 +64,32 @@ public class HelloController {
         Category save = categoryRepository.save(category);
         return ResponseEntity.ok(save);
     }
+
+    //para que jpa pueda guardar el objeto language debe la clase tener sus geters y setteres respectivos.
+    // setter para que llegeuq al metodo, y getter para que sea guardado y la respuesta del save no sea {} nula.
     @PostMapping("/language")
-    private ResponseEntity<Language> saveLanguage(@RequestBody Language languaje){
-        System.out.println("save entity "+languaje);
-        Language save = languageRepository.save(languaje);
+    private ResponseEntity<Language> saveLanguage(@RequestBody Language language){
+        System.out.println("save entity "+language.toString());
+        Language save = languageRepository.save(language);
         return ResponseEntity.ok(save);
     }
     @PostMapping("/film")
     private ResponseEntity<String> saveFilm(@RequestBody FilmDto filmDto) {
-        System.out.println("citydto "+filmDto);
-        Film film = new Film(filmDto);
-        System.out.println("film "+ film);
-        /*
+        System.out.println("filmdto "+filmDto);
 
-        Optional<Country> optionalCountry = countryRepository.findById(filmDto.idCountry());
-        Country country = optionalCountry.orElse(null);
-        if(country!=null){
-            city = new City(filmDto.city(), country);
-            cityRepository.save(city);
+        Optional<Language> optionalLanguage = languageRepository.findById(filmDto.languaje());
+
+        Language language = optionalLanguage.orElse(null);
+
+        Optional<Category> opCategory = categoryRepository.findById(filmDto.category());
+        Category category = opCategory.orElse(null);
+
+        if(language!=null && category!=null){
+            Film film = new Film(filmDto, language, category);
+            filmRepository.save(film);
         }else{
-            throw new RuntimeException("El objeto Country no es correcto ");
-        }*/
+            throw new RuntimeException("El objeto language no es correcto ");
+        }
         return ResponseEntity.ok("esta es citY: "+filmDto );
     }
 }
