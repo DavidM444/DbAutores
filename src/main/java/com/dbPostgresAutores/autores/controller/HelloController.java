@@ -4,6 +4,7 @@ import com.dbPostgresAutores.autores.aditionFunction.FindEntity;
 import com.dbPostgresAutores.autores.model.Category;
 import com.dbPostgresAutores.autores.model.Film;
 import com.dbPostgresAutores.autores.model.Language;
+import com.dbPostgresAutores.autores.model.actorEnt.Actor;
 import com.dbPostgresAutores.autores.model.dtos.CityDto;
 import com.dbPostgresAutores.autores.model.dtos.FilmDto;
 import com.dbPostgresAutores.autores.model.place.City;
@@ -22,15 +23,17 @@ public class HelloController {
     public final CategoryRepository categoryRepository;
     public final FilmRepository filmRepository;
     public final LanguageRepository languageRepository;
+    public final ActorRepository actorRepository;
 
     //metods
     public FindEntity entity;
-    public HelloController(CountryRepository coutryRep, CityRepository city, CategoryRepository categoryRepository, FilmRepository filmRepository, LanguageRepository languageRepository){
+    public HelloController(CountryRepository coutryRep, CityRepository city, CategoryRepository categoryRepository, FilmRepository filmRepository, LanguageRepository languageRepository, ActorRepository actorRepository){
         this.countryRepository = coutryRep;
         this.cityRepository = city;
         this.categoryRepository = categoryRepository;
         this.filmRepository = filmRepository;
         this.languageRepository = languageRepository;
+        this.actorRepository = actorRepository;
     }
 
     @GetMapping
@@ -84,13 +87,25 @@ public class HelloController {
         Optional<Category> opCategory = categoryRepository.findById(filmDto.category());
         Category category = opCategory.orElse(null);
 
+        Optional<Actor> opActor = actorRepository.findById(filmDto.actor());
+        Actor actor = opActor.orElse(null);
+
         if(language!=null && category!=null){
-            Film film = new Film(filmDto, language, category);
+            Film film = new Film(filmDto, language, category,actor);
             filmRepository.save(film);
         }else{
             throw new RuntimeException("El objeto language no es correcto ");
         }
         return ResponseEntity.ok("esta es citY: "+filmDto );
+    }
+
+    @PostMapping("/actor")
+    public String saveActor(@RequestBody Actor actor){
+        System.out.println("actor request"+ actor.toString());
+        Actor actor1 = new Actor();
+
+        actorRepository.save(actor);
+        return "save actor "+ actor.toString();
     }
 }
 
