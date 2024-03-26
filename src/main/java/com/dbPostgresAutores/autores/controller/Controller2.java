@@ -1,19 +1,17 @@
 package com.dbPostgresAutores.autores.controller;
 
-import com.dbPostgresAutores.autores.model.dtos.AddressDto;
-import com.dbPostgresAutores.autores.model.dtos.CustomerDto;
-import com.dbPostgresAutores.autores.model.dtos.StaffDto;
-import com.dbPostgresAutores.autores.model.dtos.StoreDto;
+import com.dbPostgresAutores.autores.model.Film;
+import com.dbPostgresAutores.autores.model.dtos.*;
 import com.dbPostgresAutores.autores.model.manage.Staff;
 import com.dbPostgresAutores.autores.model.manage.StaffRepository;
 import com.dbPostgresAutores.autores.model.manage.Store;
 import com.dbPostgresAutores.autores.model.manage.StoreRepository;
-import com.dbPostgresAutores.autores.model.market.Customer;
-import com.dbPostgresAutores.autores.model.market.CustomerRepository;
+import com.dbPostgresAutores.autores.model.market.*;
 import com.dbPostgresAutores.autores.model.place.Address;
 import com.dbPostgresAutores.autores.model.place.AddressRepository;
 import com.dbPostgresAutores.autores.model.place.City;
 import com.dbPostgresAutores.autores.services.repository.CityRepository;
+import com.dbPostgresAutores.autores.services.repository.FilmRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,13 +29,19 @@ public class Controller2 {
     private final StaffRepository staffRepository;
     private final StoreRepository storeRepository;
     private final CustomerRepository customerRepository;
+    private final InventoryRepository inventoryRepository;
+    private final FilmRepository filmRepository;
+    private final RentalRepository rentalRepository;
 
-    public Controller2(AddressRepository addressRepository, CityRepository cityRepository, StaffRepository staffRepository, StoreRepository storeRepository, CustomerRepository customerRepository){
+    public Controller2(AddressRepository addressRepository, CityRepository cityRepository, StaffRepository staffRepository, StoreRepository storeRepository, CustomerRepository customerRepository, InventoryRepository inventoryRepository, FilmRepository filmRepository, RentalRepository rentalRepository){
         this.addressRepository = addressRepository;
         this.cityRepository = cityRepository;
         this.staffRepository = staffRepository;
         this.storeRepository = storeRepository;
         this.customerRepository = customerRepository;
+        this.inventoryRepository = inventoryRepository;
+        this.filmRepository = filmRepository;
+        this.rentalRepository = rentalRepository;
     }
 
     @PostMapping("/address")
@@ -85,5 +89,26 @@ public class Controller2 {
         Customer customer= new Customer(customerDto,address);
         customerRepository.save(customer);
         return ResponseEntity.ok(customer);
+    }
+
+    @PostMapping("/inventory")
+    public ResponseEntity<Inventory> saveInventory(@RequestBody InventoryDto inventoryDto){
+        Store store = storeRepository.findById(inventoryDto.StoreId()).orElse(null);
+        Film film = filmRepository.findById(inventoryDto.filmId()).orElse(null);
+
+        Inventory inv = new Inventory(film,store);
+        Inventory inventory = inventoryRepository.save(inv);
+        return ResponseEntity.ok(inventory);
+    }
+
+    @PostMapping("/rental")
+    public ResponseEntity<Rental> saveRental(@RequestBody RentalDto rentalDto){
+        Inventory inventory = inventoryRepository.findById(rentalDto.inventoryId()).orElse(null);
+        Customer customer = customerRepository.findById(rentalDto.customerId()).orElse(null);
+        Staff staff = staffRepository.findById(rentalDto.staffId()).orElse(null);
+
+        Rental rental = new Rental(rentalDto.rentalRate(),rentalDto.returnDate(),inventory,customer,staff);
+        Rental saveRental = rentalRepository.save(rental);
+        return ResponseEntity.ok(saveRental);
     }
 }
