@@ -3,9 +3,12 @@ package com.dbPostgresAutores.autores.model.market;
 import com.dbPostgresAutores.autores.model.baseModel.BaseUpdate;
 import com.dbPostgresAutores.autores.model.manage.Staff;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
-
+@Getter
+@Setter
 @Entity
 @Table(name = "rental")
 public class Rental extends BaseUpdate {
@@ -22,4 +25,14 @@ public class Rental extends BaseUpdate {
     @OneToOne //review relation
     @JoinColumn(name = "staff_id", referencedColumnName = "id")
     private Staff staffId;
+
+
+    public Rental(LocalDate rentalRate, LocalDate returnDate, Inventory inventory, Customer customer, Staff staff) {
+        super();
+        this.rentalDate = rentalRate;
+        this.returnDate = returnDate;
+        this.customerId = customer;
+        this.inventoryId = inventory;
+        this.staffId = staff;
+    }
 }
