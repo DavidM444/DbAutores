@@ -22,10 +22,10 @@ public class Payment {
     private Integer paymentId;
     @ManyToOne //review relation
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
-    private List<Customer> customerId = new LinkedList<>();
+    private Customer customerId;
     @ManyToOne
     @JoinColumn(name = "staff_id", referencedColumnName = "id")
-    private List<Staff> staffId= new ArrayList<>();
+    private Staff staffId;
     @OneToOne
     @JoinColumn(name = "rental_id", referencedColumnName = "id")
     private Rental rentalId;
@@ -34,4 +34,13 @@ public class Payment {
     private Double amount;
     @Column(name = "payment_date")
     private LocalDate paymentDate;
+
+    public Payment(){}
+    public Payment(Customer customerId, Staff staffId, Rental rentalId, Double amount, LocalDate paymentDate ){
+        this.customerId = customerId;
+        this.staffId = staffId;
+        this.rentalId = rentalId;
+        this.amount = amount;
+        this.paymentDate = paymentDate;
+    }
 }

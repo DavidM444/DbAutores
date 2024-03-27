@@ -32,8 +32,9 @@ public class Controller2 {
     private final InventoryRepository inventoryRepository;
     private final FilmRepository filmRepository;
     private final RentalRepository rentalRepository;
+    private final PaymentRepository paymentRepository;
 
-    public Controller2(AddressRepository addressRepository, CityRepository cityRepository, StaffRepository staffRepository, StoreRepository storeRepository, CustomerRepository customerRepository, InventoryRepository inventoryRepository, FilmRepository filmRepository, RentalRepository rentalRepository){
+    public Controller2(AddressRepository addressRepository, CityRepository cityRepository, StaffRepository staffRepository, StoreRepository storeRepository, CustomerRepository customerRepository, InventoryRepository inventoryRepository, FilmRepository filmRepository, RentalRepository rentalRepository, PaymentRepository paymentRepository){
         this.addressRepository = addressRepository;
         this.cityRepository = cityRepository;
         this.staffRepository = staffRepository;
@@ -42,6 +43,7 @@ public class Controller2 {
         this.inventoryRepository = inventoryRepository;
         this.filmRepository = filmRepository;
         this.rentalRepository = rentalRepository;
+        this.paymentRepository = paymentRepository;
     }
 
     @PostMapping("/address")
@@ -114,5 +116,15 @@ public class Controller2 {
         Rental rental = new Rental(rentalDto.rentalRate(),rentalDto.returnDate(),inventory,customer,staff);
         Rental saveRental = rentalRepository.save(rental);
         return ResponseEntity.ok(saveRental);
+    }
+
+    @PostMapping("/payment")
+    public ResponseEntity<Payment> savePayment (@RequestBody PaymentDto paymentDto){
+        Customer customer = customerRepository.findById(paymentDto.customerId()).orElse(null);
+        Staff staff = staffRepository.findById(paymentDto.staffId()).orElse(null);
+        Rental rental = rentalRepository.findById(paymentDto.rentalId()).orElse(null);
+        Payment payment = paymentRepository.save(new Payment(customer, staff, rental,paymentDto.amount(),paymentDto.paymentDate()));
+        return ResponseEntity.ok(payment);
+
     }
 }
