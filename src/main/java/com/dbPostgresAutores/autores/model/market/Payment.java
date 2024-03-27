@@ -2,10 +2,16 @@ package com.dbPostgresAutores.autores.model.market;
 
 import com.dbPostgresAutores.autores.model.manage.Staff;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Stack;
-
+@Getter
+@Setter
 @Entity
 @Table(name = "payment")
 public class Payment {
@@ -14,12 +20,12 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer paymentId;
-    @OneToOne //review relation
+    @ManyToOne //review relation
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
-    private Customer customerId;
-    @OneToOne
+    private List<Customer> customerId = new LinkedList<>();
+    @ManyToOne
     @JoinColumn(name = "staff_id", referencedColumnName = "id")
-    private Staff staffId;
+    private List<Staff> staffId= new ArrayList<>();
     @OneToOne
     @JoinColumn(name = "rental_id", referencedColumnName = "id")
     private Rental rentalId;
@@ -28,5 +34,4 @@ public class Payment {
     private Double amount;
     @Column(name = "payment_date")
     private LocalDate paymentDate;
-
 }
