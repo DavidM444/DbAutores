@@ -93,9 +93,13 @@ public class Controller2 {
 
     @PostMapping("/inventory")
     public ResponseEntity<Inventory> saveInventory(@RequestBody InventoryDto inventoryDto){
-        Store store = storeRepository.findById(inventoryDto.StoreId()).orElse(null);
-        Film film = filmRepository.findById(inventoryDto.filmId()).orElse(null);
+        System.out.println("data inventory "+inventoryDto.toString() + " inv "+inventoryDto);
+        Optional<Store> opStore = storeRepository.findById(inventoryDto.storeId());
+        Store store = opStore.orElse(null);
+        Optional<Film> opFilm = filmRepository.findById(inventoryDto.filmId());
+        Film film = opFilm.orElse(null);
 
+        System.out.println("entitis "+ store +" "+film.toString());
         Inventory inv = new Inventory(film,store);
         Inventory inventory = inventoryRepository.save(inv);
         return ResponseEntity.ok(inventory);

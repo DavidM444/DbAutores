@@ -22,7 +22,7 @@ public class Rental extends BaseUpdate {
     private Customer customerId;
     @Column(name = "return_date")
     private LocalDate returnDate;
-    @OneToOne //review relation
+    @ManyToOne //review relation
     @JoinColumn(name = "staff_id", referencedColumnName = "id")
     private Staff staffId;
 
