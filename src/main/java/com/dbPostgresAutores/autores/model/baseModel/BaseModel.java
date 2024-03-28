@@ -2,9 +2,6 @@ package com.dbPostgresAutores.autores.model.baseModel;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
-import lombok.Getter;
-
-import java.io.Serializable;
 
 @MappedSuperclass
 public class BaseModel extends BaseUpdate{
@@ -13,6 +10,12 @@ public class BaseModel extends BaseUpdate{
     @Column(name = "last_name")
     private String lastName;
 
+
+    public BaseModel(String firstName, String lastName){
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+    public BaseModel(){}
     public String getFirstName() {
         return firstName;
     }
