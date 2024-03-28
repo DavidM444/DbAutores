@@ -1,4 +1,6 @@
 package com.dbPostgresAutores.autores.model.dtos;
 
-public record CityDto(String city, Integer idCountry) {
+import jakarta.validation.constraints.NotBlank;
+
+public record CityDto(@NotBlank(message = "name city is necessary.") String city,@NotBlank(message = "Country cant be empty") Integer idCountry) {
 }
