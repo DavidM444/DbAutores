@@ -35,7 +35,7 @@ public class Staff extends BaseModel {
 
 
     public Staff(StaffDto staffDto, Address address){
-        super();
+        super(staffDto.firstName(),staffDto.lastName());
         this.addressId = address;
         this.email = staffDto.email();
         this.storeId = staffDto.storeId();
