@@ -16,10 +16,12 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
 @Table(name = "country")
 public class Country extends BaseUpdate {
     @Column(name = "country")
     private String country;
 
+    public Country(){}
 
 }
