@@ -32,7 +32,7 @@ public class Customer extends BaseModel {
     private short active; //1 -> active  0 -> no active
 
     public Customer(CustomerDto customerDto, Address address){
-        super();
+        super(customerDto.firstName(),customerDto.lastName());
         this.storeId = customerDto.storeId();
         this.email = customerDto.email();
         this.addressId = address;

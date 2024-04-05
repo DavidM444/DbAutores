@@ -35,4 +35,5 @@ public class Rental extends BaseUpdate {
         this.inventoryId = inventory;
         this.staffId = staff;
     }
+    public Rental(){}
 }
