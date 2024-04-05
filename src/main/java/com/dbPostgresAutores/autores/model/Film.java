@@ -66,4 +66,5 @@ public class Film extends BaseUpdate {
         this.category.add(category);
         this.actor.add(actor);
     }
+    public Film(){}
 }
