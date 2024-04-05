@@ -1,6 +1,5 @@
 package com.dbPostgresAutores.autores.controller;
 
-import com.dbPostgresAutores.autores.aditionFunction.FindEntity;
 import com.dbPostgresAutores.autores.model.Category;
 import com.dbPostgresAutores.autores.model.Film;
 import com.dbPostgresAutores.autores.model.Language;
@@ -25,8 +24,6 @@ public class HelloController {
     public final LanguageRepository languageRepository;
     public final ActorRepository actorRepository;
 
-    //metods
-    public FindEntity entity;
     public HelloController(CountryRepository coutryRep, CityRepository city, CategoryRepository categoryRepository, FilmRepository filmRepository, LanguageRepository languageRepository, ActorRepository actorRepository){
         this.countryRepository = coutryRep;
         this.cityRepository = city;

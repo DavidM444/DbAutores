@@ -13,10 +13,7 @@ import com.dbPostgresAutores.autores.model.place.City;
 import com.dbPostgresAutores.autores.services.repository.CityRepository;
 import com.dbPostgresAutores.autores.services.repository.FilmRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -47,22 +44,23 @@ public class Controller2 {
     }
 
     @PostMapping("/address")
-    public String saveAddress(@RequestBody AddressDto addressDto){
+    public ResponseEntity<Address> saveAddress(@RequestBody AddressDto addressDto){
         System.out.println("dto address "+addressDto);
         Optional<City> city1 = cityRepository.findById(addressDto.cityId());
         City city = city1.orElse(null);
         Address address = addressRepository.save(new Address(addressDto,city));
-        return "address save "+address.toString();
+        return ResponseEntity.ok(address);
     }
 
     @PostMapping("/staff")
-    public String saveStaff( @RequestBody StaffDto staffDto){
+    @ResponseBody //otra forma: en lugar de usar response entity. Se usa esta anotacion para seralizar el retorno como Json.
+    public Staff saveStaff( @RequestBody StaffDto staffDto){
 
         System.out.println("staff dto "+ staffDto);
         Optional<Address> opAddress = addressRepository.findById(staffDto.addressId());
         Address address = opAddress.orElse(null);
         Staff staff = staffRepository.save(new Staff(staffDto, address));
-        return "staff save "+staff;
+        return staff;
     }
 
     @PostMapping("/store")
