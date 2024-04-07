@@ -18,51 +18,36 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
 
+import static net.bytebuddy.matcher.ElementMatchers.is;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class ModelLanguageTest {
+    final String url = "/api/v1/hello/";
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @Autowired
+    private ObjectMapper om;
+
+    @Mock
     private CountryRepository countryRepository;
 
-    private Country country() {
-        Country country = new Country();
-        country.setId(1);
-        country.setLastUpdate(LocalDate.of(2024,1,1));
-        country.setCountry("Bogota");
-
-
-        return country;
-
-    }
-
-
-    @BeforeEach
-    void setup(){
-        System.out.println("setup beforeEach");
-
-    }
-
-
-
     @Test
-    public void data_language_test_post () throws Exception {
+    public void dataLanguageTesPost () throws Exception {
 
         Language language = new Language();
         language.setName("Indian");
-        ObjectMapper om = new ObjectMapper();
         String lang = om.writeValueAsString(language);
 
-
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/hello/language")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(url+"language")
                 .content(lang).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(200)).andReturn();
 
@@ -73,17 +58,27 @@ public class ModelLanguageTest {
     }
 
     @Test
-    public void test_save_city_country_and_address() throws Exception{
+    public void testSaveCountry() throws Exception{
+
         Country countryRequest = new Country();
         countryRequest.setCountry("Bogota");
         countryRequest.setLastUpdate(LocalDate.of(2024,1,1));
 
-        Country country = country();
+        Country country = new Country();
+        country.setId(1);
+        country.setCountry("Bogota");
+        country.setLastUpdate(LocalDate.of(2024,1,1));
+        String send = om.writeValueAsString(country);
 
-
+        //ver uso de mock y mockbean ya que puede causar errrores.
         Mockito.when(countryRepository.save(countryRequest)).thenReturn(country);
 
-       mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/hello/country").contentType(MediaType.APPLICATION_JSON)
-               ).andExpect(MockMvcResultMatchers.status().is(200));
+        var result =mockMvc.perform(MockMvcRequestBuilders.post(url+"country").content(send)
+                       .contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().is(200));
+
+        Country country1 = om.readValue(result.andReturn().getResponse().getContentAsString(), Country.class);
+        Assertions.assertEquals(country1.getCountry(),country.getCountry());
+
+
     }
 }
