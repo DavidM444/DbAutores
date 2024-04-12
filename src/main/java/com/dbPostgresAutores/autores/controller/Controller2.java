@@ -12,14 +12,23 @@ import com.dbPostgresAutores.autores.model.place.AddressRepository;
 import com.dbPostgresAutores.autores.model.place.City;
 import com.dbPostgresAutores.autores.services.repository.CityRepository;
 import com.dbPostgresAutores.autores.services.repository.FilmRepository;
+import org.springframework.boot.autoconfigure.data.RepositoryType;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.Repository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.function.Function;
+
+
+
+
 
 @RestController
 @RequestMapping("/api/v1/hello")
-public class Controller2 {
+public class Controller2{
 
     public final AddressRepository addressRepository;
     public final CityRepository cityRepository;
@@ -42,13 +51,17 @@ public class Controller2 {
         this.rentalRepository = rentalRepository;
         this.paymentRepository = paymentRepository;
     }
+    public static <T, ID> T findObjectById(CrudRepository<T, ID> repository, ID id) {
+        return repository.findById(id).orElseThrow(()->new RuntimeException("Object not found with id: "+id));
+    }
 
     @PostMapping("/address")
     public ResponseEntity<Address> saveAddress(@RequestBody AddressDto addressDto){
         System.out.println("dto address "+addressDto);
-        Optional<City> city1 = cityRepository.findById(addressDto.cityId());
-        City city = city1.orElse(null);
-        Address address = addressRepository.save(new Address(addressDto,city));
+        //Optional<City> city1 = cityRepository.findById(addressDto.cityId());
+        //City city = city1.orElse(null);
+
+        Address address = addressRepository.save(new Address(addressDto,findObjectById(cityRepository,addressDto.cityId())));
         return ResponseEntity.ok(address);
     }
 
@@ -65,6 +78,7 @@ public class Controller2 {
 
     @PostMapping("/store")
     public String saveStore( @RequestBody StoreDto storeDto){
+
 
         Optional<Staff> opStaff = staffRepository.findById(storeDto.managerStaffId());
         Staff staff = opStaff.orElse(null);
