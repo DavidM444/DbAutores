@@ -16,4 +16,15 @@ public class BaseUpdate implements Serializable {
     @Column(name = "last_update")
     private LocalDate lastUpdate = LocalDate.now();
 
+    public Integer getId(){
+        return this.id;
+    }
+
+    @Override
+    public String toString() {
+        return "BaseUpdate{" +
+                "id=" + id +
+                ", lastUpdate=" + lastUpdate +
+                '}';
+    }
 }
