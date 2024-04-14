@@ -1,15 +1,18 @@
 package com.dbPostgresAutores.autores.testControllers;
 
 import com.dbPostgresAutores.autores.model.dtos.AddressDto;
+import com.dbPostgresAutores.autores.model.dtos.CityDto;
 import com.dbPostgresAutores.autores.model.place.Address;
 import com.dbPostgresAutores.autores.model.place.AddressRepository;
 import com.dbPostgresAutores.autores.model.place.City;
 import com.dbPostgresAutores.autores.model.place.Country;
 import com.dbPostgresAutores.autores.services.repository.CityRepository;
+import com.dbPostgresAutores.autores.services.repository.CountryRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.constraints.AssertTrue;
 import org.junit.jupiter.api.*;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +28,17 @@ import org.springframework.test.web.servlet.result.RequestResultMatchers;
 import org.springframework.util.Assert;
 
 import java.io.Serial;
+import java.util.Optional;
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)//order test conf
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+//@TestMethodOrder(MethodOrderer.OrderAnnotation.class)//order test conf
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class TestAddress {
-
-    final String url = "/api/v1/hello/address";
+    static final String url = "/api/v1/hello/address";
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -39,49 +46,56 @@ public class TestAddress {
     @Autowired
     private MockMvc mockMvc;
 
-    @Mock
+    @MockBean
     private AddressRepository addressRepository;
 
-    @Mock
+    @MockBean
     private CityRepository cityRepository;
 
-    //creacion de objetos
     private Country country;
     private City city;
 
-
     @BeforeEach
     void setup(){
-        System.out.println("Inicializacion objeto a traves de dto");
         country = new Country("Colombia");
-        city = new City("Bogota", country);
-
+        country.setId(1);
     }
 
     @Test
-    @Order(2)
     public void saveCityTest(){
         City cityResponse = new City("Bogota",country);
         cityResponse.setId(1);
-        Mockito.when(cityRepository.save(city)).thenReturn(cityResponse);
+        city = new City("Bogota", country);
+        when(cityRepository.save(city)).thenReturn(cityResponse);
 
-        Assertions.assertEquals(city.getCity(),cityResponse.getCity());
-        Assertions.assertEquals(city.getCountryId(), cityResponse.getCountryId());
+        City city1 = cityRepository.save(city);
+
+        Assertions.assertEquals(city1.getCity(),cityResponse.getCity());
+        Assertions.assertEquals(city1.getCountryId(), cityResponse.getCountryId());
     }
     @Test
-    @Order(1)
     public void saveAddressTest() throws Exception {
+        city = new City("Bogota",country);
 
-        AddressDto addressDto = new AddressDto("Sakila Drive",null, "Alberta",
-                 1,"45200","23323");
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(url).contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(addressDto))).andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andReturn();
+        Mockito.when(cityRepository.findById(1)).thenReturn(Optional.of(city));
 
-        Address address = objectMapper.readValue(result.getResponse().getContentAsString(), Address.class);
+        AddressDto addressDto = new AddressDto("47 MySakila","boyaca","Alberta",
+                1,"543333","5765767657");
+
+        Address address = new Address(addressDto,city);
+        Mockito.when(addressRepository.save(Mockito.any())).thenReturn(address);
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(url).content(objectMapper.writeValueAsString(addressDto))
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        Address addressResponse = objectMapper.readValue(result.getResponse().getContentAsString(), Address.class);
+
         Assertions.assertNotNull(address);
-        Assertions.assertEquals(addressDto.postalCode(),address.getPostalCode());
-        Assertions.assertNull(address.getAddress2());
-        Assertions.assertEquals(address.getAddress(), addressDto.address());
+        Assertions.assertEquals(addressResponse.getPostalCode(),address.getPostalCode());
+        Assertions.assertNotNull(address.getAddress2());
+        Assertions.assertEquals(address.getAddress(), addressResponse.getAddress());
+        Assertions.assertNotNull(address.getCityId());
+        //Assertions.assertNotNull(address.getCityId().getId()); country not mock
     }
 
 
