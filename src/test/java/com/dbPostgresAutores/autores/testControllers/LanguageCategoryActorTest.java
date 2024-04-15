@@ -6,16 +6,12 @@ import com.dbPostgresAutores.autores.model.actorEnt.Actor;
 import com.dbPostgresAutores.autores.services.repository.ActorRepository;
 import com.dbPostgresAutores.autores.services.repository.CategoryRepository;
 import com.dbPostgresAutores.autores.services.repository.LanguageRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.checkerframework.checker.units.qual.K;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-
-import java.time.LocalDate;
 import java.util.function.Supplier;
 
 @SpringBootTest
@@ -25,13 +21,14 @@ public class LanguageCategoryActorTest {
     private final ActorRepository actorRepository;
 
     @Autowired
-    public LanguageCategoryActorTest(LanguageRepository languageRepository, CategoryRepository categoryRepository, ActorRepository actorRepository) {
+    public LanguageCategoryActorTest(final LanguageRepository languageRepository,
+                                     final CategoryRepository categoryRepository,
+                                     final ActorRepository actorRepository) {
         this.languageRepository = languageRepository;
         this.categoryRepository = categoryRepository;
         this.actorRepository = actorRepository;
+
     }
-
-
 
     @Test
     void saveLanguageEntity(){
@@ -66,5 +63,4 @@ public class LanguageCategoryActorTest {
         Supplier<String> name = ()-> "Penelope";
         Assertions.assertEquals(actorResponse.getFirstName(), name.get());
     }
-
 }

@@ -2,9 +2,6 @@ package com.dbPostgresAutores.autores.testControllers;
 
 import com.dbPostgresAutores.autores.model.dtos.AddressDto;
 import com.dbPostgresAutores.autores.model.dtos.CustomerDto;
-import com.dbPostgresAutores.autores.model.manage.Staff;
-import com.dbPostgresAutores.autores.model.manage.StaffRepository;
-import com.dbPostgresAutores.autores.model.manage.StoreRepository;
 import com.dbPostgresAutores.autores.model.market.Customer;
 import com.dbPostgresAutores.autores.model.market.CustomerRepository;
 import com.dbPostgresAutores.autores.model.place.Address;
@@ -24,7 +21,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -60,7 +56,6 @@ public class CustomerTest {
 
     @Test
     void saveCustomerTest() throws  Exception{
-
         CustomerDto customerDto = new CustomerDto("Mary", "Smith",1,"mary.smith@sakilacustomer.org",
                 1,true, LocalDate.of(2006,2,12), (short) 1);
         Customer customer = new Customer(customerDto,address);
@@ -71,6 +66,5 @@ public class CustomerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.addressId.district").value("Alberta"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.addressId.cityId.countryId.country").value("Colombia"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
-
     }
 }

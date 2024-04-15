@@ -1,6 +1,5 @@
 package com.dbPostgresAutores.autores.testControllers;
 
-import com.dbPostgresAutores.autores.controller.Controller2;
 import com.dbPostgresAutores.autores.model.dtos.AddressDto;
 import com.dbPostgresAutores.autores.model.dtos.StaffDto;
 import com.dbPostgresAutores.autores.model.dtos.StoreDto;
@@ -13,14 +12,11 @@ import com.dbPostgresAutores.autores.model.place.AddressRepository;
 import com.dbPostgresAutores.autores.model.place.City;
 import com.dbPostgresAutores.autores.model.place.Country;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.mockito.internal.junit.JUnitTestRule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -39,8 +35,6 @@ public class StoreTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private ObjectMapper objectMapper;
-
     @MockBean
     private StoreRepository storeRepository;
 
@@ -49,10 +43,9 @@ public class StoreTest {
     @MockBean
     private StaffRepository staffRepository;
 
-
     private Address address;
     private Staff staff;
-
+    private ObjectMapper objectMapper;
     @BeforeEach
     void setUp(){
         City city = new City("Medellin",new Country("Colombia"));
@@ -67,8 +60,6 @@ public class StoreTest {
         Mockito.when(addressRepository.findById(Mockito.any())).thenReturn(Optional.of(address));
         objectMapper = new ObjectMapper();
     }
-
-
 
     @Test
     void saveStore() throws Exception{

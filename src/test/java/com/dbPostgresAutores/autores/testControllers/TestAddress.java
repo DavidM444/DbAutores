@@ -1,19 +1,15 @@
 package com.dbPostgresAutores.autores.testControllers;
 
 import com.dbPostgresAutores.autores.model.dtos.AddressDto;
-import com.dbPostgresAutores.autores.model.dtos.CityDto;
 import com.dbPostgresAutores.autores.model.place.Address;
 import com.dbPostgresAutores.autores.model.place.AddressRepository;
 import com.dbPostgresAutores.autores.model.place.City;
 import com.dbPostgresAutores.autores.model.place.Country;
 import com.dbPostgresAutores.autores.services.repository.CityRepository;
-import com.dbPostgresAutores.autores.services.repository.CountryRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.validation.constraints.AssertTrue;
-import org.junit.jupiter.api.*;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,17 +20,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.result.RequestResultMatchers;
-import org.springframework.util.Assert;
-
-import java.io.Serial;
 import java.util.Optional;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 //@TestMethodOrder(MethodOrderer.OrderAnnotation.class)//order test conf
-
 @SpringBootTest
 @AutoConfigureMockMvc
 public class TestAddress {
@@ -76,7 +65,6 @@ public class TestAddress {
     @Test
     public void saveAddressTest() throws Exception {
         city = new City("Bogota",country);
-
         Mockito.when(cityRepository.findById(1)).thenReturn(Optional.of(city));
 
         AddressDto addressDto = new AddressDto("47 MySakila","boyaca","Alberta",
@@ -87,7 +75,6 @@ public class TestAddress {
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(url).content(objectMapper.writeValueAsString(addressDto))
                 .contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
-
         Address addressResponse = objectMapper.readValue(result.getResponse().getContentAsString(), Address.class);
 
         Assertions.assertNotNull(address);

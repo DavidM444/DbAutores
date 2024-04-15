@@ -61,7 +61,6 @@ public class PaymentTest {
         Payment payment = new Payment(customer,staff,rental,paymentDto.amount(),paymentDto.paymentDate());
 
         Mockito.when(paymentRepository.save(Mockito.any())).thenReturn(payment);
-
         mockMvc.perform(MockMvcRequestBuilders.post(url).content(objectMapper.writeValueAsString(paymentDto)).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.customerId.lastName").value("Smith"))

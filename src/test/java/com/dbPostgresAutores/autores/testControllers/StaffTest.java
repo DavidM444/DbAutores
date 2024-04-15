@@ -44,7 +44,6 @@ public class StaffTest {
     private Address address;
     private Staff staff;
 
-
     @BeforeEach
     void setUp(){
         City city = new City("Medellin",new Country("Colombia"));

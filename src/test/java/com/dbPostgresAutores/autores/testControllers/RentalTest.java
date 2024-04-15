@@ -5,12 +5,13 @@ import com.dbPostgresAutores.autores.model.dtos.CustomerDto;
 import com.dbPostgresAutores.autores.model.dtos.RentalDto;
 import com.dbPostgresAutores.autores.model.dtos.StaffDto;
 import com.dbPostgresAutores.autores.model.manage.Staff;
-import com.dbPostgresAutores.autores.model.manage.StaffRepository;
 import com.dbPostgresAutores.autores.model.manage.Store;
-import com.dbPostgresAutores.autores.model.market.*;
+import com.dbPostgresAutores.autores.model.market.Customer;
+import com.dbPostgresAutores.autores.model.market.Inventory;
+import com.dbPostgresAutores.autores.model.market.Rental;
+import com.dbPostgresAutores.autores.model.market.RentalRepository;
 import com.dbPostgresAutores.autores.model.place.Address;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -24,12 +25,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
-import java.util.Optional;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
 public class RentalTest {
-
     static final String url = "/api/v1/hello/rental";
     @Autowired
     private MockMvc mockMvc;

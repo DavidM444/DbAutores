@@ -1,6 +1,5 @@
 package com.dbPostgresAutores.autores.testControllers;
 
-import com.dbPostgresAutores.autores.controller.HelloController;
 import com.dbPostgresAutores.autores.model.Category;
 import com.dbPostgresAutores.autores.model.Film;
 import com.dbPostgresAutores.autores.model.Language;
@@ -11,21 +10,15 @@ import com.dbPostgresAutores.autores.services.repository.CategoryRepository;
 import com.dbPostgresAutores.autores.services.repository.FilmRepository;
 import com.dbPostgresAutores.autores.services.repository.LanguageRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilderSupport;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
