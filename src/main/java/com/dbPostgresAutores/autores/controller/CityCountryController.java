@@ -5,16 +5,19 @@ import com.dbPostgresAutores.autores.model.place.City;
 import com.dbPostgresAutores.autores.model.place.Country;
 import com.dbPostgresAutores.autores.services.repository.CityRepository;
 import com.dbPostgresAutores.autores.services.repository.CountryRepository;
+import org.apache.catalina.mapper.Mapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@Controller
+@RestController
+@RequestMapping("/api/v1/place")
 public class CityCountryController {
 
     private final CityRepository cityRepository;
@@ -52,6 +55,25 @@ public class CityCountryController {
             throw new RuntimeException("El objeto Country no es correcto ");
         }
         return ResponseEntity.ok("esta es citY: " );
+    }
+
+    @GetMapping("/countries")
+    public ResponseEntity<Page<Country>> getListCountries(
+            @PageableDefault(size = 15, page = 2,
+                    sort = {"country","id"},direction = Sort.Direction.ASC)
+            Pageable pageable){
+        Page<Country> country = countryRepository.findAll(pageable);
+        return ResponseEntity.ok().body(country);
+    }
+
+    @GetMapping("/countries/{id}")
+    public ResponseEntity<Country> findCountry(@PathVariable("id")String idCountry){
+        Country country = countryRepository.findById(Integer.valueOf(idCountry)).orElse(null);
+        if (country == null){
+            throw new RuntimeException("objeto vacio country");
+        }
+        return ResponseEntity.ok(country);
+
     }
 
 
