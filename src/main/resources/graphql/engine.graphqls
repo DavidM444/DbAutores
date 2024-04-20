@@ -1,0 +1,8 @@
+type Query{
+    listCountries: [Country]
+}
+
+type Country{
+    id: Int,
+    country: String
+}
