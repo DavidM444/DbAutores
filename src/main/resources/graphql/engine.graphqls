@@ -5,6 +5,10 @@ type Query{
     findByCountry(id: Int): Country
 }
 
+type Mutation{
+    insertCountry(name: String): Country
+}
+
 type Country{
     id: Int,
     country: String,
