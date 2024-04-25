@@ -72,6 +72,15 @@
 			<artifactId>spring-boot-starter-graphql</artifactId>
 		</dependency>
 
+		<!-- rsocket and reactive web -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-rsocket</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
